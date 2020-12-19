@@ -1,5 +1,8 @@
 package com.example.myapplication;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Correct_answers {
     private String answer_a_correct;
     private String answer_b_correct;
@@ -8,7 +11,16 @@ public class Correct_answers {
     private String answer_e_correct;
     private String answer_f_correct;
 
-
+    public List<String> getCorrectAnswers(){
+        ArrayList<String> answers = new ArrayList<>();
+        answers.add(getAnswer_a_correct());
+        answers.add(getAnswer_b_correct());
+        answers.add(getAnswer_c_correct());
+        answers.add(getAnswer_d_correct());
+        answers.add(getAnswer_e_correct());
+        answers.add(getAnswer_f_correct());
+        return answers;
+    }
     // Getter Methods
 
     public String getAnswer_a_correct() {

@@ -6,9 +6,9 @@ public class Question {
     private float id;
     private String question;
     private String description = null;
-    Answers AnswersObject;
+    Answers answers;
     private String multiple_correct_answers;
-    Correct_answers Correct_answersObject;
+    Correct_answers correct_answers;
     private String correct_answer;
     private String explanation = null;
     private String tip = null;
@@ -32,7 +32,7 @@ public class Question {
     }
 
     public Answers getAnswers() {
-        return AnswersObject;
+        return answers;
     }
 
     public String getMultiple_correct_answers() {
@@ -40,7 +40,7 @@ public class Question {
     }
 
     public Correct_answers getCorrect_answers() {
-        return Correct_answersObject;
+        return correct_answers;
     }
 
     public String getCorrect_answer() {
@@ -78,7 +78,7 @@ public class Question {
     }
 
     public void setAnswers(Answers answersObject) {
-        this.AnswersObject = answersObject;
+        this.answers = answersObject;
     }
 
     public void setMultiple_correct_answers(String multiple_correct_answers) {
@@ -86,7 +86,7 @@ public class Question {
     }
 
     public void setCorrect_answers(Correct_answers correct_answersObject) {
-        this.Correct_answersObject = correct_answersObject;
+        this.correct_answers = correct_answersObject;
     }
 
     public void setCorrect_answer(String correct_answer) {

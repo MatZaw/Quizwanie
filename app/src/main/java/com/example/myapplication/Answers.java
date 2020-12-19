@@ -1,5 +1,8 @@
 package com.example.myapplication;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Answers {
     private String answer_a;
     private String answer_b;
@@ -8,7 +11,16 @@ public class Answers {
     private String answer_e = null;
     private String answer_f = null;
 
-
+    public List<String> getAnswers(){
+        ArrayList<String> answers = new ArrayList<>();
+        answers.add(getAnswer_a());
+        answers.add(getAnswer_b());
+        answers.add(getAnswer_c());
+        answers.add(getAnswer_d());
+        answers.add(getAnswer_e());
+        answers.add(getAnswer_f());
+        return answers;
+    }
     // Getter Methods
 
     public String getAnswer_a() {
