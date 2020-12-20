@@ -19,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     ImageButton linuxBtn;
+    ImageButton codeBtn;
+    ImageButton sqlBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +30,26 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.textView);
 
         linuxBtn = findViewById(R.id.linuxBtn);
+        codeBtn = findViewById(R.id.codeBtn);
+        sqlBtn = findViewById(R.id.sqlBtn);
 
         title.setText("Categories:");
 
         linuxBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, Test.class);
             intent.putExtra("category", "linux");
+            startActivity(intent);
+        });
+
+        codeBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Test.class);
+            intent.putExtra("category", "code");
+            startActivity(intent);
+        });
+
+        sqlBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Test.class);
+            intent.putExtra("category", "sql");
             startActivity(intent);
         });
     }

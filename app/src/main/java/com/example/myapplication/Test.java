@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -30,7 +31,7 @@ public class Test extends AppCompatActivity {
     MyCountDownTimer myCountDownTimer;
     TextView question;
     String category;
-    ProgressBar progressBar;
+    ProgressBar progressBar, loadingBar;
     RadioGroup answersView;
     final int NUMBER_OF_QUESTIONS = 3;
     int questionsCounter = 0;
@@ -44,6 +45,7 @@ public class Test extends AppCompatActivity {
         question = findViewById(R.id.questionView);
         progressBar = findViewById(R.id.progressBar);
         answersView = findViewById(R.id.answersView);
+        loadingBar = findViewById(R.id.loadingBar);
 
         Intent intent = getIntent();
         category = intent.getStringExtra("category");
@@ -84,6 +86,11 @@ public class Test extends AppCompatActivity {
 
 
                 // START GRY
+                loadingBar.setVisibility(View.INVISIBLE);
+                question.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                answersView.setVisibility(View.VISIBLE);
+
                 question.setText(questions.get(questionsCounter).getQuestion());
                 renderAnswers(questionsCounter);
                 questionsCounter++;
@@ -145,6 +152,7 @@ public class Test extends AppCompatActivity {
         intent.putExtra("score", score);
         intent.putExtra("max", NUMBER_OF_QUESTIONS);
         startActivity(intent);
+        finish();
     }
 
     private int getIndexRightAnswer(){
