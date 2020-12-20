@@ -35,12 +35,14 @@ public class Test extends AppCompatActivity {
     RadioGroup answersView;
     final int NUMBER_OF_QUESTIONS = 3;
     int questionsCounter = 0;
-    int score = 0;
+    int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        score = 0;
 
         question = findViewById(R.id.questionView);
         progressBar = findViewById(R.id.progressBar);
@@ -107,6 +109,7 @@ public class Test extends AppCompatActivity {
 
     // Ustawia progressBar na 100%
     public void setProgressBar(){
+        System.out.println("Poprawna odpowiedz: " + getIndexRightAnswer());
         progressBar.setProgress(100);
         myCountDownTimer = new MyCountDownTimer(10000, 500);
         myCountDownTimer.start();
@@ -129,10 +132,11 @@ public class Test extends AppCompatActivity {
         public void onFinish() {
             progressBar.setProgress(0);
             if(questionsCounter < NUMBER_OF_QUESTIONS){
-
+                System.out.println("oddana odpowiedz: " + answersView.getCheckedRadioButtonId());
                 if(getIndexRightAnswer() == answersView.getCheckedRadioButtonId()){
                     score++;
                 }
+
 
                 answersView.removeAllViews();
                 question.setText(questions.get(questionsCounter).getQuestion());
@@ -141,6 +145,10 @@ public class Test extends AppCompatActivity {
                 setProgressBar();
 
             }else{
+                System.out.println("oddana odpowiedz: " + answersView.getCheckedRadioButtonId());
+                if(getIndexRightAnswer() == answersView.getCheckedRadioButtonId()){
+                    score++;
+                }
                 showResult();
             }
         }
@@ -156,7 +164,7 @@ public class Test extends AppCompatActivity {
     }
 
     private int getIndexRightAnswer(){
-        int index = 0;
+        int index = 1;
         for(String el : questions.get(questionsCounter).getCorrect_answers().getCorrectAnswers()){
             if(el.equals("true")) return index;
             else index++;
@@ -165,10 +173,12 @@ public class Test extends AppCompatActivity {
     }
 
     public void renderAnswers(int index){
-
+        int i = 1;
         for(String a : questions.get(index).getAnswers().getAnswers()){
             if(a != null) {
                 RadioButton btn = new RadioButton(this);
+                btn.setId(i);
+                i++;
                 btn.setText(a);
                 answersView.addView(btn);
             }
