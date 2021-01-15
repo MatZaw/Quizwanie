@@ -20,4 +20,8 @@ public class ResultActivity extends AppCompatActivity {
         resultView = findViewById(R.id.resultView);
         resultView.setText(intent.getIntExtra("score", 0) + "/" + intent.getIntExtra("max", 0));
     }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

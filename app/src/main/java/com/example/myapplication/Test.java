@@ -27,15 +27,17 @@ public class Test extends AppCompatActivity {
 
     final private String apiKey = "7WEUZKn33Ee7soEPPJZd39NwxfFn3UQFDksdPqBy";
     final private String baseUrl = "https://quizapi.io/";
+    final private String baseUrlLoginApi = "http://10.0.2.2:8080/";
     private List<Question> questions;
     MyCountDownTimer myCountDownTimer;
     TextView question;
     String category;
     ProgressBar progressBar, loadingBar;
     RadioGroup answersView;
-    final int NUMBER_OF_QUESTIONS = 3;
+    final int NUMBER_OF_QUESTIONS = 5;
     int questionsCounter = 0;
     int score;
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,44 @@ public class Test extends AppCompatActivity {
 
         Intent intent = getIntent();
         category = intent.getStringExtra("category");
+        userName = intent.getStringExtra("username");
         getQuestions();
     }
 
+    public void postResult(String username, String title, String score, String max){
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrlLoginApi)
+                .build();
+
+        LoginApi loginApi = retrofit.create(LoginApi.class);
+        System.out.println("postResults: " + username + " " + title + " " + score + " " + max);
+        Call<Void> call = loginApi.postResult(username,title,score,max);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(!response.isSuccessful()){
+                    System.out.println(response.code());
+                    return;
+                }
+                goToResult();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+
+    }
+
+    void goToResult(){
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra("score", score);
+        intent.putExtra("max", NUMBER_OF_QUESTIONS);
+        startActivity(intent);
+        finish();
+    }
 
     // Odebranie pytań z api
     public void getQuestions(){
@@ -156,11 +192,7 @@ public class Test extends AppCompatActivity {
 
     private void showResult(){
         // podsumwoanie gry
-        Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra("score", score);
-        intent.putExtra("max", NUMBER_OF_QUESTIONS);
-        startActivity(intent);
-        finish();
+        postResult(userName, category, String.valueOf(score), String.valueOf(NUMBER_OF_QUESTIONS));
     }
 
     private int getIndexRightAnswer(){
@@ -180,6 +212,31 @@ public class Test extends AppCompatActivity {
                 btn.setId(i);
                 i++;
                 btn.setText(a);
+                btn.setOnClickListener(v -> {
+                    myCountDownTimer.cancel();
+                    progressBar.setProgress(0);
+                    if(questionsCounter < NUMBER_OF_QUESTIONS){
+                        System.out.println("oddana odpowiedz: " + answersView.getCheckedRadioButtonId());
+                        if(getIndexRightAnswer() == answersView.getCheckedRadioButtonId()){
+                            score++;
+                        }
+
+
+                        answersView.removeAllViews();
+                        question.setText(questions.get(questionsCounter).getQuestion());
+                        renderAnswers(questionsCounter);
+                        questionsCounter++;
+                        setProgressBar();
+
+                    }else{
+                        System.out.println("oddana odpowiedz: " + answersView.getCheckedRadioButtonId());
+                        if(getIndexRightAnswer() == answersView.getCheckedRadioButtonId()){
+                            score++;
+                        }
+                        showResult();
+                    }
+
+                });
                 answersView.addView(btn);
             }
         }
